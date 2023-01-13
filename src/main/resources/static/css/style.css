@@ -8,3 +8,10 @@ header {
 footer {
 	height: 100px;
 }
+.signUp.table {
+	border-bottom: 1px solid #dee2e6;
+}
+.signUp.table tr th {
+	background: #eee;
+	vertical-align: middle;
+}

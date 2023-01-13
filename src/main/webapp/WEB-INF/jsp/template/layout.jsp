@@ -18,13 +18,14 @@
 </head>
 <body>
 	<div id="wrap">
-		<header class="bg-info">
+		<header class="bg-light p-3 d-flex">
 			<jsp:include page="../include/header.jsp" />
 		</header>
-		<section class="contents bg-success">
+		<section class="contents pt-5 pb-5">
 			<jsp:include page="../${viewName}.jsp" />
+			<jsp:include page="../${viewName}" />
 		</section>
-		<footer class="bg-info">
+		<footer class="bg-light d-flex justify-content-center align-items-center">
 			<jsp:include page="../include/footer.jsp" />
 		</footer>
 	</div>
