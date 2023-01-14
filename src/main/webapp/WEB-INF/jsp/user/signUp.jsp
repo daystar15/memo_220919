@@ -106,26 +106,21 @@
 			}
 			
 			let password = $("#password").val().trim();
-			if (password.length == '') {
-				alert("비밀번호를 입력해주세요");
-				return false;
-			}
-			
 			let confirmPassword = $("#confirmPassword").val().trim();
-			if (confirmPassword.length == '') {
-				alert("아이디를 입력해주세요");
+			if (password.length == '' confirmPassword.length == '') {
+				alert("비밀번호를 입력해주세요");
 				return false;
 			}
 
 			let name = $("#name").val().trim();
 			if (name.length == '') {
-				alert("아이디를 입력해주세요");
+				alert("이름을 입력해주세요");
 				return false;
 			}
 
 			let email = $("#email").val().trim();
 			if (email.length == '') {
-				alert("아이디를 입력해주세요");
+				alert("이메일를 입력해주세요");
 				return false;
 			}
 			
