@@ -18,7 +18,7 @@
 </head>
 <body>
 	<div id="wrap">
-		<header class="bg-light p-3 d-flex">
+		<header class="bg-light p-3 pl-5 d-flex align-items-center justify-content-between">
 			<jsp:include page="../include/header.jsp" />
 		</header>
 		<section class="contents pt-5 pb-5">

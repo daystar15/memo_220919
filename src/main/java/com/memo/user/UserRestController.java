@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.memo.common.EncryptUtils;
 import com.memo.user.bo.UserBO;
+import com.memo.user.model.User;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
@@ -42,6 +46,14 @@ public class UserRestController {
 		return result;
 	}
 	
+	/**
+	 * 회원가입 API
+	 * @param loginId
+	 * @param password
+	 * @param name
+	 * @param email
+	 * @return
+	 */
 	@PostMapping("/sign_up")
 	public Map<String, Object> signUp(
 			@RequestParam("loginId")  String loginId,
@@ -63,4 +75,39 @@ public class UserRestController {
 		
 		return result;
 	}
+	
+	@PostMapping("/sign_in")
+	public Map<String, Object> singIn(
+			@RequestParam("loginId") String loginId,
+			@RequestParam("password") String password,
+			HttpServletRequest request) { // 세션을 사용하기 위해
+		
+		// 비밀번호 해싱
+		String hashedPassword = EncryptUtils.md5(password);
+		
+		// db select
+		User user = userBO.getUserByLoginIdPassword(loginId, hashedPassword);
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		if (user != null) {
+			// 행이 있으면 로그인
+			result.put("code", 1);
+			result.put("result", "성공");
+			
+			// 세션이라는 공간에 유저 정보를 담는다.(로그인 상태 유지)
+			HttpSession session = request.getSession();
+			session.setAttribute("userId", user.getId());
+			session.setAttribute("userLoginId", user.getLoginId());
+			session.setAttribute("userName", user.getName());
+		} else {
+			// 행이 없으면 로그인 실패
+			result.put("code", 500);
+			result.put("errorMessage", "존재하지 않는 사용자입니다.");
+		}
+		
+		// return map
+		return result; // response
+	}
+	
 }
