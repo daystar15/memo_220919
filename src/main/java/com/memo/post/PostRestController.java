@@ -35,6 +35,8 @@ public class PostRestController {
 		// db insert
 		int rowCount = postBO.addPost(userId, userLoginId, subject, content, file);
 		
+		// db select
+		
 		Map<String, Object> result = new HashMap<>();
 		
 		if (rowCount > 0) {
