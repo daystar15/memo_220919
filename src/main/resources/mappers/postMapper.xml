@@ -49,4 +49,21 @@
  		ORDER BY `id` DESC
  	</select>
  	
+ 	<select id="selectPostByPostIdUserId" parameterType="map" resultType="com.memo.post.model.Post">
+ 		SELECT
+ 			`id`
+			, `userId`
+			, `subject`
+			, `content`
+			, `imagePath`
+			, `createdAt`
+			, `updatedAt`
+ 		FROM
+ 			`post`
+ 		WHERE
+ 			`userId` = #{userId}
+ 			AND
+ 			`id` = #{postId}
+ 	</select>
+ 	
  </mapper>

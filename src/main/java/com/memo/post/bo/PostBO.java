@@ -35,4 +35,8 @@ public class PostBO {
 	public List<Post> getPostListByUserId(int userId) {
 		return postDAO.getPostListByUserId(userId);
 	}
+	
+	public Post getPostByPostIdUserId(int postId, int userId) {
+		return postDAO.selectPostByPostIdUserId(postId, userId);
+	}
 }
