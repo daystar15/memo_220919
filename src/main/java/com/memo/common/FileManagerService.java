@@ -6,12 +6,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 // 스프링빈으로 할지 자바빈으로 할지 선택
 @Component // bo, dao, controller에 속하지 않을 때 쓰는 어노테이션, 제일 부모격임, 일반적인 스프링빈
 public class FileManagerService {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	// 실제 이미지가 저장될 경로(서버)
 	// static final 같이 있으면 상수가 되고 대문자로 쓴다. 주소 마지막에 꼭 슬래시를 넣는다★★
@@ -47,4 +51,33 @@ public class FileManagerService {
 		// http://localhost:8080/images/aaaa_162090932/sun.png WebMvcConfig에서 웹이미지와 매핑함
 		return "/images/" + directoryName + file.getOriginalFilename(); // 한글로 바뀌면 오리지널네임도 바뀐다.
 	}
+	
+	public void deleteFile(String imagePath) { // imagePath: /images/aaaa_162090932/sun.png WebMvcConfig
+		//   \\images/    imagePath에 있는 겹치는  /images/ 구문 제거
+		Path path = Paths.get(FILE_UPLOAD_PATH + imagePath.replace("/images/", ""));
+		if (Files.exists(path)) {
+			// 이미지 삭제
+			// Files.delete(path);   try-catch로 예외처리
+			try {
+				Files.delete(path); 
+			} catch (IOException e) {
+				logger.error("[이미지 삭제] 이미지 삭제 실패. imagePath:{}", imagePath);
+			}
+			
+			// 디렉토리(폴더) 삭제
+			path = path.getParent();
+			if (Files.exists(path)) {
+				// Files.delete(path);  try-catch로 감싸기
+				try {
+					Files.delete(path);
+				} catch (IOException e) {
+					logger.error("[이미지 삭제] 디렉토리 삭제 실패. imagePath:{}", imagePath);
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 }
