@@ -45,8 +45,34 @@
  		FROM
  			`post`
  		WHERE
+ 			`userId` = #{userId} <!-- #{} 따옴표가 들어감 -->
+ 			<if test="direction == null">  <!-- 첫번째 페이지 -->
+ 			ORDER BY `id` DESC
+ 			</if>
+ 			<if test="direction == 'next'">
+	 			<![CDATA[
+	 				AND `id`< #{standardId}
+	 			]]>
+ 			ORDER BY `id` DESC
+ 			</if>
+ 			<if test="direction == 'prev'">
+ 				<![CDATA[
+	 				AND `id`> #{standardId}
+	 			]]>
+	 		<!-- order by는 안쓰면 정방향으로 가져와져서 생략 -->
+ 			</if>
+ 		LIMIT ${limit} <!-- ${} 따옴표가 안들어감, 쿼리에서 따옴표 들어가면 오류남 -->
+ 	</select>
+ 	
+ 	<select id="selectPostIdByUserIdSort" parameterType="map" resultType="int">
+ 		SELECT
+ 			`id`
+ 		FROM
+ 			`post`
+ 		WHERE
  			`userId` = #{userId}
- 		ORDER BY `id` DESC
+ 		ORDER BY `id` ${sort}
+ 		LIMIT 1
  	</select>
  	
  	<select id="selectPostByPostIdUserId" parameterType="map" resultType="com.memo.post.model.Post">
